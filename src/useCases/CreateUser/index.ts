@@ -1,10 +1,10 @@
 import { CreateUserUseCase } from "./CreateUserUseCase";
 import { CreateUserController } from "./CreateUserController";
-import { MongoUsersRepository } from "../../repositories/implementations/MongoUsersRepository";
+import { PrismaUsersRepository } from "../../repositories/implementations/PrismaUsersRepository";
 
-const mongoUsersRepository = new MongoUsersRepository();
+const prismaUsersRepository = new PrismaUsersRepository();
 
-const createUserUseCase = new CreateUserUseCase(mongoUsersRepository);
+const createUserUseCase = new CreateUserUseCase(prismaUsersRepository);
 
 const createUserController = new CreateUserController(createUserUseCase);
 
