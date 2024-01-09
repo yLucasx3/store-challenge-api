@@ -11,10 +11,22 @@ datasource db {
 }
 
 model User {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  displayName String
-  email       String  @unique
-  password    String?
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String  @unique
+  password        String?
+  image           String?
+  providerAccount String?
 
   @@map("users")
+}
+
+model Product {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  price       Float
+  description String
+  image       String?
+
+  @@map("products")
 }

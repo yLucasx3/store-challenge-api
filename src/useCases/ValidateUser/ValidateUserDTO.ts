@@ -1,4 +1,6 @@
 export interface ValidateUserDTO {
-  displayName: string;
+  name: string;
   email: string;
+  image: string;
+  providerAccount: string;
 }

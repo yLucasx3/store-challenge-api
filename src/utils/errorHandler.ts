@@ -1,6 +1,13 @@
-function getErrorMessage(error: unknown) {
-  if (error instanceof Error) return error.message;
-  return String(error);
-}
+import { Response } from "express";
+import { GenericError } from "./genericError";
 
-export { getErrorMessage };
+const handleError = (response: Response, error: GenericError) => {
+  if (error instanceof GenericError) {
+    return response.status(error.statusCode).json({ message: error.message });
+  }
+
+  console.log(error);
+  return response.status(500).send({ message: "Internal server error" });
+};
+
+export { handleError };

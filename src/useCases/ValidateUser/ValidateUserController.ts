@@ -1,19 +1,25 @@
 import { Request, Response } from "express";
 import { ValidateUserUseCase } from "./ValidateUserUseCase";
-import { getErrorMessage } from "../../utils/errorHandler";
+import { handleError } from "../../utils/errorHandler";
+import { GenericError } from "../../utils/genericError";
 
 export class ValidateUserController {
   constructor(private validateUserUseCase: ValidateUserUseCase) {}
 
   async handle(request: Request, response: Response) {
-    const { displayName, email } = request.body;
+    const { name, email, image, providerAccount } = request.body;
 
     try {
-      await this.validateUserUseCase.execute(displayName, email);
+      const isUserValidated = await this.validateUserUseCase.execute({
+        name,
+        email,
+        image,
+        providerAccount,
+      });
 
-      return response.status(200).send({ message: "User validated" });
+      return response.status(200).send({ isUserValidated });
     } catch (error) {
-      return response.status(400).json({ message: getErrorMessage(error) });
+      return handleError(response, error as GenericError);
     }
   }
 }

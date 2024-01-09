@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
-import { getErrorMessage } from "../../utils/errorHandler";
+import { handleError } from "../../utils/errorHandler";
+import { GenericError } from "../../utils/genericError";
 
 export class AuthenticateUserController {
   constructor(private authenticateUserUseCase: AuthenticateUserUseCase) {}
@@ -16,9 +17,7 @@ export class AuthenticateUserController {
 
       return response.status(200).send({ user: authenticatedUser });
     } catch (error) {
-      return response.status(401).json({
-        message: getErrorMessage(error),
-      });
+      return handleError(response, error as GenericError);
     }
   }
 }
