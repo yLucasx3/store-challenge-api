@@ -5,8 +5,8 @@ export class ListProductsUseCase {
   constructor(private productsRepository: IProductsRepository) {}
 
   async execute(paginationOptions: IListProductsDTO) {
-    const { page, pageSize, filter } = paginationOptions;
+    const { offset, limit, filter } = paginationOptions;
 
-    return this.productsRepository.list(page, pageSize, filter);
+    return this.productsRepository.list(offset, limit, filter);
   }
 }

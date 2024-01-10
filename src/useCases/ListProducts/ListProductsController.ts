@@ -8,12 +8,14 @@ export class ListProductsController {
   constructor(private listProductsUseCase: ListProductsUseCase) {}
 
   async handle(request: Request, response: Response) {
-    const { page, pageSize, filter } = request.query;
+    const { offset, limit, filter } = request.query;
+
+    request.query;
 
     try {
       const products = await this.listProductsUseCase.execute({
-        page: Number(page) ?? 0,
-        pageSize: Number(pageSize),
+        offset: Number(offset) ?? 0,
+        limit: Number(limit),
         filter: filter as { field: keyof Product; value: string },
       });
 

@@ -1,16 +1,6 @@
 import { Product } from "../../entities/Product";
 import { prisma } from "../../providers/PrismaProvider";
-import { IProductsRepository } from "../IProductsRepository";
-
-interface PaginatedResponse {
-  items: Product[];
-  pageInfo: {
-    page: number;
-    pageSize: number;
-    totalPages: number;
-    totalItems: number;
-  };
-}
+import { IProductsRepository, PaginatedResponse } from "../IProductsRepository";
 
 export class PrismaProductsRepository implements IProductsRepository {
   findById(id: string): Promise<Product | null> {
@@ -33,30 +23,60 @@ export class PrismaProductsRepository implements IProductsRepository {
   }
 
   async list(
-    page: number,
-    pageSize: number,
-    filter?: { field: keyof Product; value: string | number }
+    offset: number,
+    limit: number,
+    filter?: Record<string, any>,
+    orderBy?: "name" | "price",
+    orderDirection?: "asc" | "desc"
   ): Promise<PaginatedResponse> {
-    const skip = (page - 1) * pageSize;
+    let filterOptions = filter;
 
-    const totalItems = await prisma.product.count();
-    const totalPages = Math.ceil(totalItems / pageSize);
+    if (filter?.price) {
+      filterOptions = { price: Number(filter.price) };
+    }
 
-    const items = await prisma.product.findMany({
-      skip,
-      take: pageSize,
-      ...(filter ? { where: { [filter.field]: filter.value } } : {}),
-      orderBy: { name: "asc" },
-    });
+    const [items, totalItems] = await Promise.all([
+      prisma.product.findMany({
+        skip: offset,
+        take: limit,
+        ...(filter ? { where: filterOptions } : {}),
+        ...(orderBy ? { orderBy: { [orderBy]: orderDirection || "asc" } } : {}),
+      }),
+      prisma.product.count(),
+    ]);
+
+    const totalPages = Math.ceil(totalItems / limit);
+    const currentPage = Math.floor(offset / limit) + 1;
 
     return {
       items,
       pageInfo: {
-        page,
-        pageSize,
-        totalPages,
         totalItems,
+        totalPages,
+        currentPage,
       },
     };
+  }
+
+  async update(id: string, product: Omit<Product, "id">): Promise<Product> {
+    const { name, price, description, image } = product;
+
+    const updatedProduct = await prisma.product.update({
+      where: { id },
+      data: {
+        name,
+        price,
+        description,
+        image,
+      },
+    });
+
+    return updatedProduct;
+  }
+
+  async remove(id: string): Promise<boolean> {
+    const removedProduct = await prisma.product.delete({ where: { id } });
+
+    return !!removedProduct;
   }
 }

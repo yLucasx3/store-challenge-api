@@ -6,7 +6,7 @@ const handleError = (response: Response, error: GenericError) => {
     return response.status(error.statusCode).json({ message: error.message });
   }
 
-  console.log(error);
+  console.error(error);
   return response.status(500).send({ message: "Internal server error" });
 };
 
