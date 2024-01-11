@@ -22,11 +22,12 @@ model User {
 }
 
 model Product {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  price       Float
-  description String
-  image       String?
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  price              Float
+  description        String
+  image              String?
+  discountPercentage Float?
 
   @@map("products")
 }
