@@ -6,7 +6,8 @@
   "author": "Lucas Ariel <ylucasx3@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "tsnd --respawn --ignore-watch node_modules src/server.ts",
+    "dev": "tsnd --respawn --ignore-watch node_modules src/server.ts",
+    "start": "tsnd src/server.ts",
     "build": "tsup src"
   },
   "dependencies": {
