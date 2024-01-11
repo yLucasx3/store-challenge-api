@@ -8,14 +8,15 @@ export class ListProductsController {
   constructor(private listProductsUseCase: ListProductsUseCase) {}
 
   async handle(request: Request, response: Response) {
-    const { offset, limit, filter } = request.query;
+    const { filter } = request.query;
 
-    request.query;
+    const offset = Number(request.query.offset);
+    const limit = Number(request.query.limit);
 
     try {
       const products = await this.listProductsUseCase.execute({
-        offset: Number(offset) ?? 0,
-        limit: Number(limit),
+        offset: isNaN(offset) ? 0 : offset,
+        limit: isNaN(limit) ? 10 : limit,
         filter: filter as { field: keyof Product; value: string },
       });
 

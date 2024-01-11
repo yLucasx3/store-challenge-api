@@ -9,8 +9,6 @@ export class DeleteProductController {
   async handle(request: Request, response: Response) {
     const { id } = request.params;
 
-    console.log(id);
-
     try {
       await this.deleteProductUseCase.execute(id);
 

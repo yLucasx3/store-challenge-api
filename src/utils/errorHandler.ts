@@ -3,7 +3,9 @@ import { GenericError } from "./genericError";
 
 const handleError = (response: Response, error: GenericError) => {
   if (error instanceof GenericError) {
-    return response.status(error.statusCode).json({ message: error.message });
+    return response
+      .status(error.statusCode)
+      .json({ message: error.message, field: error.customField });
   }
 
   console.error(error);
