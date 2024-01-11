@@ -42,8 +42,8 @@ export class PrismaProductsRepository implements IProductsRepository {
 
     const [items, totalItems] = await Promise.all([
       prisma.product.findMany({
-        skip: offset,
-        take: limit,
+        skip: offset ?? 0,
+        take: limit ?? 10,
         ...(filter ? { where: filterOptions } : {}),
         ...(orderBy ? { orderBy: { [orderBy]: orderDirection || "asc" } } : {}),
       }),
