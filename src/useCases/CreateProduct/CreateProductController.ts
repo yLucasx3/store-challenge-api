@@ -7,7 +7,8 @@ export class CreateProductController {
   constructor(private createProductUseCase: CreateProductUseCase) {}
 
   async handle(request: Request, response: Response) {
-    const { name, price, description, image } = request.body;
+    const { name, price, description, image, discountPercentage } =
+      request.body;
 
     try {
       const newProduct = await this.createProductUseCase.execute({
@@ -15,6 +16,7 @@ export class CreateProductController {
         price,
         description,
         image,
+        discountPercentage,
       });
 
       return response.status(201).send({ newProduct });

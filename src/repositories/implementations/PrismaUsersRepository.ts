@@ -1,5 +1,4 @@
 import { User } from "../../entities/User";
-import { IPasswordProvider } from "../../providers/IPasswordProvider";
 import { prisma } from "../../providers/PrismaProvider";
 import { IUsersRepository } from "../IUsersRepository";
 

@@ -3,4 +3,5 @@ export interface CreateProductDTO {
   description: string;
   price: number;
   image?: string;
+  discountPercentage?: number;
 }

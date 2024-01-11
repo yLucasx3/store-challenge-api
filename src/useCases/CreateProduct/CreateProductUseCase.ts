@@ -6,9 +6,15 @@ export class CreateProductUseCase {
   constructor(private prismaProductsRepository: PrismaProductsRepository) {}
 
   async execute(product: CreateProductDTO) {
-    const { name, price, description, image } = product;
+    const { name, price, description, image, discountPercentage } = product;
 
-    const newProduct = new Product({ name, price, description, image });
+    const newProduct = new Product({
+      name,
+      price,
+      description,
+      image,
+      discountPercentage,
+    });
 
     return this.prismaProductsRepository.save(newProduct);
   }

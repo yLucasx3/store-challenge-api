@@ -43,9 +43,9 @@ router.delete("/products/:id", (request, response) => {
   return deleteProductController.handle(request, response);
 });
 
-// const [serve, setup] = setupDocs;
+const [serve, setup] = setupDocs;
 
-// router.use("/docs", serve);
-// router.get("/docs", setup);
+router.use("/docs", serve);
+router.get("/docs", setup);
 
 export { router };

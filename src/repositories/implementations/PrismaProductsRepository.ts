@@ -3,21 +3,26 @@ import { prisma } from "../../providers/PrismaProvider";
 import { IProductsRepository, PaginatedResponse } from "../IProductsRepository";
 
 export class PrismaProductsRepository implements IProductsRepository {
-  findById(id: string): Promise<Product | null> {
-    return prisma.product.findUnique({ where: { id } });
+  async findById(id: string): Promise<Product | null> {
+    const product = (await prisma.product.findUnique({
+      where: { id },
+    })) as Product;
+
+    return product;
   }
 
   async save(product: Omit<Product, "id">): Promise<Product> {
-    const { name, price, description, image } = product;
+    const { name, price, description, image, discountPercentage } = product;
 
-    const newProduct = await prisma.product.create({
+    const newProduct = (await prisma.product.create({
       data: {
         name,
         price,
         description,
         image,
+        discountPercentage,
       },
-    });
+    })) as Product;
 
     return newProduct;
   }
@@ -49,7 +54,7 @@ export class PrismaProductsRepository implements IProductsRepository {
     const currentPage = Math.floor(offset / limit) + 1;
 
     return {
-      items,
+      items: items as Product[],
       pageInfo: {
         totalItems,
         totalPages,
@@ -61,7 +66,7 @@ export class PrismaProductsRepository implements IProductsRepository {
   async update(id: string, product: Omit<Product, "id">): Promise<Product> {
     const { name, price, description, image } = product;
 
-    const updatedProduct = await prisma.product.update({
+    const updatedProduct = (await prisma.product.update({
       where: { id },
       data: {
         name,
@@ -69,7 +74,7 @@ export class PrismaProductsRepository implements IProductsRepository {
         description,
         image,
       },
-    });
+    })) as Product;
 
     return updatedProduct;
   }
