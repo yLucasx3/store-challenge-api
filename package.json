@@ -1,12 +1,13 @@
 {
   "name": "store-challenge-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "repository": "https://github.com/yLucasx3/store-challenge-api.git",
   "author": "Lucas Ariel <ylucasx3@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "tsnd --respawn --ignore-watch node_modules src/server.ts"
+    "start": "tsnd --respawn --ignore-watch node_modules src/server.ts",
+    "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
