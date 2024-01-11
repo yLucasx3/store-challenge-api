@@ -4,7 +4,7 @@ import { router } from "./routes";
 const app = express();
 
 const corsOptions: CorsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["https://store-challenge.vercel.app", "http://localhost:3333"],
 };
 
 app.use(cors(corsOptions));
